@@ -33,17 +33,13 @@ class MeteoController extends AbstractController
         return $this->json($content);
     }
 
-    #[Route('/generate', name: 'generateQuery')]
-    public function getGenerateQueryParameters(Request $request): Response
+    #[Route('/query', name: 'queryWeatherData')]
+    public function getQueryWeatherData(Request $request): Response
     {
         $latitude = $request->query->get('latitude');
         $longitude = $request->query->get('longitude');
-        $current_weather = $request->query->get('current_weather');
-        $hourly = $request->query->get('hourly');
-
-        if (!$hourly) {
-            $hourly = "temperature_2m";
-        }
+        $current_weather = true;
+        $hourly = "temperature_2m";
 
         // send GET request to Open-Meteo API
         $response = $this->client->request(
