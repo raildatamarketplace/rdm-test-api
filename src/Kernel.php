@@ -11,19 +11,19 @@ class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
-        if ($this->environment == 'prod') {
-            return '/tmp/var/cache';
+        if ($this->environment == 'dev') {
+            return '/var/cache';
         }
         
-        return dirname(__DIR__).'var/cache';
+        return dirname(__DIR__).'/tmp/var/cache';
     }
 
     public function getLogDir(): string
     {
-        if ($this->environment == 'prod') {
-            return '/tmp/var/log';
+        if ($this->environment == 'dev') {
+            return '/var/log';
         }
         
-        return dirname(__DIR__).'var/log';
+        return dirname(__DIR__).'/tmp/var/log';
     }
 }
