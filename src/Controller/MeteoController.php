@@ -19,20 +19,6 @@ class MeteoController extends AbstractController
         $this->client = $client;
     }
 
-    #[Route('/', name: 'index')]
-    public function index(): Response
-    {
-        // send GET request to Open-Meteo API
-        $response = $this->client->request(
-            "GET",
-            $this->meteoApiHost . "?latitude=52.52&longitude=13.41&current_weather=true&hourly=temperature_2m"
-        );
-
-        $content = $response->toArray();
-
-        return $this->json($content);
-    }
-
     #[Route('/query', name: 'queryWeatherData')]
     public function getQueryWeatherData(Request $request): Response
     {
@@ -40,6 +26,15 @@ class MeteoController extends AbstractController
         $longitude = $request->query->get('longitude');
         $current_weather = true;
         $hourly = "temperature_2m";
+
+        if (!$latitude || !$longitude) {
+            return $this->json([
+                'error' => [
+                    'code' => 400,
+                    'message' => 'The server cannot process the request due to a client error e.g. missing query parameters'
+                ]
+            ]);
+        }
 
         // send GET request to Open-Meteo API
         $response = $this->client->request(
